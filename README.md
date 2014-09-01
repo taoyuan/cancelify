@@ -5,7 +5,7 @@ cancellable
 [![Build Status](http://img.shields.io/travis/taoyuan/cancellable.svg?style=flat)](https://travis-ci.org/taoyuan/cancellable)
 [![Dependencies](https://img.shields.io/david/taoyuan/cancellable.svg?style=flat)](https://david-dm.org/taoyuan/cancellable)
 
-> A library for making async operations cancellable
+> A javascript library for making async operations cancellable
 
 ## Installation
 
