@@ -1,0 +1,41 @@
+{
+  "name": "cancellable",
+  "version": "0.1.0",
+  "main": "index.js",
+  "description": "A library for making async operations cancellable",
+  "homepage": "https://github.com/taoyuan/cancellable",
+  "bugs": "https://github.com/taoyuan/cancellable/issues",
+  "author": {
+    "name": "Tao Yuan",
+    "email": "torworx@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/taoyuan/cancellable"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ],
+  "keywords": [
+    "cancellable",
+    "cancel",
+    "cancelable",
+    "cancellable"
+  ],
+  "devDependencies": {
+    "async": "^0.9.0",
+    "chai": "*",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-mocha-test": "~0.11.0",
+    "jshint-stylish": "^0.4.0",
+    "load-grunt-tasks": "^0.6.0",
+    "mocha": "^1.21.4",
+    "time-grunt": "~1.0.0"
+  },
+  "scripts": {
+    "test": "grunt"
+  }
+}
