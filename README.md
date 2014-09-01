@@ -14,22 +14,24 @@ $ npm install cancelify --save
 
 ## API
 
-### cancelify([fn])
+### cancelify
+
+#### cancelify([fn])
 
 Returns a new cancelify:
 
 ```js
 var cancelify = require('cancelify');
 
-var fn = cancelify();
-callAsyncOperation(arg1, arg2, arg3, fn.future);
+var cancellable = cancelify();
+callAsyncOperation(arg1, arg2, arg3, cancellable.future);
 
 setTimeout(function () {
-    fn.cancel('Operation timed out');
+    cancellable.cancel('Operation timed out');
 }, 1000);
 ```
 
-### cancelify.empty()
+#### cancelify.empty()
 
 Returns an 'empty' cancelify future (one that will never be cancelled).
 
@@ -41,23 +43,31 @@ function asyncOperation(arg1, arg2, arg3, callback) {
 }
 ```
 
-### cancellable.cancel()
+### cancellable
 
-Cancel the current async operations.
+#### cancellable.cancel()
+
+Cancels the current async operations.
 
 ```js
 var cancelify = require('cancelify');
-var callback = cancelify(function (err, data) {
+var cancellable = cancelify(function (err, data) {
     if (err) throw err;
     console.log(data);
 });
 
-asyncOperation(arg1, arg2, arg3, callback.future);
+asyncOperation(arg1, arg2, arg3, cancellable.future);
 
-callback.cancel('canceled');
+cancellable.cancel('canceled');
 ```
 
-### future.cancelled([callback])
+#### cancellable.future
+
+Returns the cancellable future. See detail below.
+
+### future
+
+#### future.cancelled([callback])
 
 If no arguments provide, returns true if the future has been cancelled:
 
@@ -86,7 +96,7 @@ function get(url, future) {
 }
 ```
 
-### future.throwIfCancelled()
+#### future.throwIfCancelled()
 
 Throws the reason if the future has been cancelled:
 
