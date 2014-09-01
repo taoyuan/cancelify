@@ -21,11 +21,11 @@ Returns a new cancelify:
 ```js
 var cancelify = require('cancelify');
 
-var cancelable = cancelify();
-callAsyncOperation(arg1, arg2, arg3, cancelable.future);
+var fn = cancelify();
+callAsyncOperation(arg1, arg2, arg3, fn.future);
 
 setTimeout(function () {
-    cancelable.cancel('Operation timed out');
+    fn.cancel('Operation timed out');
 }, 1000);
 ```
 
@@ -34,12 +34,27 @@ setTimeout(function () {
 Returns an 'empty' cancelify future (one that will never be cancelled).
 
 ```js
-var cancelify = require('cancelify');
 function asyncOperation(arg1, arg2, arg3, callback) {
     callback = callback || cancelify.empty();
 
     // Continue with function knowing there is a cancelify future
 }
+```
+
+### cancellable.cancel()
+
+Cancel the current async operations.
+
+```js
+var cancelify = require('cancelify');
+var callback = cancelify(function (err, data) {
+    if (err) throw err;
+    console.log(data);
+});
+
+asyncOperation(arg1, arg2, arg3, callback.future);
+
+callback.cancel('canceled');
 ```
 
 ### future.cancelled([callback])
