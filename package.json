@@ -1,17 +1,17 @@
 {
-  "name": "cancellable",
+  "name": "cancelify",
   "version": "0.1.0",
   "main": "index.js",
   "description": "A library for making async operations cancellable",
-  "homepage": "https://github.com/taoyuan/cancellable",
-  "bugs": "https://github.com/taoyuan/cancellable/issues",
+  "homepage": "https://github.com/taoyuan/cancelify",
+  "bugs": "https://github.com/taoyuan/cancelify/issues",
   "author": {
     "name": "Tao Yuan",
     "email": "torworx@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/taoyuan/cancellable"
+    "url": "https://github.com/taoyuan/cancelify"
   },
   "licenses": [
     {
@@ -19,10 +19,10 @@
     }
   ],
   "keywords": [
-    "cancellable",
+    "cancelify",
     "cancel",
     "cancelable",
-    "cancellable"
+    "cancelify"
   ],
   "devDependencies": {
     "async": "^0.9.0",

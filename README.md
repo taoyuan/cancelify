@@ -1,45 +1,44 @@
-cancellable
-===========
+cancelify
+=========
 
-[![NPM Version](https://img.shields.io/npm/v/cancellable.svg?style=flat)](https://www.npmjs.org/package/cancellable)
-[![Build Status](http://img.shields.io/travis/taoyuan/cancellable.svg?style=flat)](https://travis-ci.org/taoyuan/cancellable)
-[![Dependencies](https://img.shields.io/david/taoyuan/cancellable.svg?style=flat)](https://david-dm.org/taoyuan/cancellable)
+[![NPM Version](https://img.shields.io/npm/v/cancelify.svg?style=flat)](https://www.npmjs.org/package/cancelify)
+[![Build Status](http://img.shields.io/travis/taoyuan/cancelify.svg?style=flat)](https://travis-ci.org/taoyuan/cancelify)
 
-> A javascript library for making async operations cancellable
+> A javascript library for making async operations cancelify
 
 ## Installation
 
 ```bash
-$ npm install cancellable --save
+$ npm install cancelify --save
 ```
 
 ## API
 
-### cancellable([fn])
+### cancelify([fn])
 
-Returns a new cancellable:
+Returns a new cancelify:
 
 ```js
-var cancellable = require('cancellable');
+var cancelify = require('cancelify');
 
-var fn = cancellable();
-callAsyncOperation(arg1, arg2, arg3, fn.future);
+var cancelable = cancelify();
+callAsyncOperation(arg1, arg2, arg3, cancelable.future);
 
 setTimeout(function () {
-    fn.cancel('Operation timed out');
+    cancelable.cancel('Operation timed out');
 }, 1000);
 ```
 
-### cancellable.empty()
+### cancelify.empty()
 
-Returns an 'empty' cancellable future (one that will never be cancelled).
+Returns an 'empty' cancelify future (one that will never be cancelled).
 
 ```js
-var cancellable = require('cancellable');
+var cancelify = require('cancelify');
 function asyncOperation(arg1, arg2, arg3, callback) {
-    callback = callback || cancellable.empty();
+    callback = callback || cancelify.empty();
 
-    // Continue with function knowing there is a cancellable future
+    // Continue with function knowing there is a cancelify future
 }
 ```
 

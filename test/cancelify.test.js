@@ -2,9 +2,9 @@
 
 var async = require('async');
 var t = require('chai').assert;
-var cancellable = require('../lib/cancellable');
+var cancelify = require('../lib/cancelify');
 
-describe.only('cancellable', function () {
+describe.only('cancelify', function () {
 
     describe('Default token fn', function () {
         it('should not get cancelled', function (done) {
@@ -14,7 +14,7 @@ describe.only('cancellable', function () {
 
     describe('Cancelling with a future', function () {
         it('should invoke callback with reason in the next turn of the event loop', function (done) {
-            var fn = cancellable();
+            var fn = cancelify();
             var waitedTillNextTurn = false;
             var timeout;
             fn.cancel('Test Cancel');
@@ -35,10 +35,10 @@ describe.only('cancellable', function () {
         });
     });
 
-    describe('Polling for cancellable', function () {
+    describe('Polling for cancelify', function () {
         describe('using `.cancelled()`', function () {
             it('should works', function (done) {
-                var fn = cancellable();
+                var fn = cancelify();
                 var timeout;
                 fn.cancel('Test Cancel');
                 timeout = setTimeout(function () {
@@ -53,7 +53,7 @@ describe.only('cancellable', function () {
         });
         describe('using `.throwIfCancelled()`', function () {
             it('should works', function (done) {
-                var fn = cancellable();
+                var fn = cancelify();
                 var timeout;
                 fn.cancel('Test Cancel');
                 timeout = setTimeout(function () {
@@ -68,9 +68,9 @@ describe.only('cancellable', function () {
         });
     });
 
-    describe('Cascading cancellable', function () {
+    describe('Cascading cancelify', function () {
         it('should works', function (done) {
-            var fn = cancellable();
+            var fn = cancelify();
             var waitedTillNextTurn = false;
             var timeout;
             fn.cancel('Test Cancel');
@@ -97,7 +97,7 @@ function delay(timeout, future, cb) {
         cb = future;
         future = null;
     }
-    future = future || cancellable.empty();
+    future = future || cancelify.empty();
 
     var called = false;
 
@@ -116,7 +116,7 @@ function delay2(timeout, future, cb) {
         cb = future;
         future = null;
     }
-    future = future || cancellable.empty();
+    future = future || cancelify.empty();
     setTimeout(function () {
         if (future.cancelled()) return cb(new Error('Operation Cancelled'));
         cb();
@@ -128,7 +128,7 @@ function delay3(timeout, future, cb) {
         cb = future;
         future = null;
     }
-    future = future || cancellable.empty();
+    future = future || cancelify.empty();
 
     async.series([
         function (callback) {
