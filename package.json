@@ -29,7 +29,7 @@
     "chai": "*",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-mocha-test": "~0.11.0",
+    "grunt-mocha-test": "^0.11.0",
     "jshint-stylish": "^0.4.0",
     "load-grunt-tasks": "^0.6.0",
     "mocha": "^1.21.4",
