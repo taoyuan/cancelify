@@ -104,5 +104,4 @@ function asyncOperation(future) {
 
 ## License
 
-Copyright (c) 2014 Tao Yuan  
-Licensed under the MIT license.
+Copyright (c) 2014 Tao Yuan. Licensed under the MIT license.
