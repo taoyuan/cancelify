@@ -12,7 +12,7 @@ describe.only('cancelify', function () {
         });
     });
 
-    describe('Canceling with a possible', function () {
+    describe('Canceling with a future', function () {
         it('should invoke callback with reason in the next turn of the event loop', function (done) {
             var cancelable = cancelify();
             var waitedTillNextTurn = false;
@@ -23,7 +23,7 @@ describe.only('cancelify', function () {
                 throw new Error('Did not cancel fast enough');
             }, 100);
 
-            delay(20000, cancelable.possible(), function (reason) {
+            delay(20000, cancelable.future(), function (reason) {
                 if (!reason) throw new Error('Should have been canceled');
                 t(waitedTillNextTurn);
                 t.instanceOf(reason, Error);
@@ -44,7 +44,7 @@ describe.only('cancelify', function () {
                 timeout = setTimeout(function () {
                     throw new Error('Did not cancel fast enough');
                 }, 30);
-                delay2(40, cancelable.possible(), function (reason) {
+                delay2(40, cancelable.future(), function (reason) {
                     if (!reason) throw new Error('Should have been canceled');
                     clearTimeout(timeout);
                     done();
@@ -59,7 +59,7 @@ describe.only('cancelify', function () {
                 timeout = setTimeout(function () {
                     throw new Error('Did not cancel fast enough');
                 }, 30);
-                delay3(40, cancelable.possible(), function (reason) {
+                delay3(40, cancelable.future(), function (reason) {
                     if (!reason) throw new Error('Should have been canceled');
                     clearTimeout(timeout);
                     done();
@@ -78,7 +78,7 @@ describe.only('cancelify', function () {
             timeout = setTimeout(function () {
                 throw new Error('Did not cancel fast enough');
             }, 20);
-            cascade(cancelable.possible(), function (reason) {
+            cascade(cancelable.future(), function (reason) {
                 if (!reason) throw new Error('Should have been canceled');
                 t(waitedTillNextTurn);
                 t.instanceOf(reason, Error);
@@ -92,12 +92,12 @@ describe.only('cancelify', function () {
 });
 
 
-function delay(timeout, possible, cb) {
-    if (typeof possible === 'function') {
-        cb = possible;
-        possible = null;
+function delay(timeout, future, cb) {
+    if (typeof future === 'function') {
+        cb = future;
+        future = null;
     }
-    possible = possible || cancelify.possible();
+    future = future || cancelify.future();
 
     var called = false;
 
@@ -108,27 +108,27 @@ function delay(timeout, possible, cb) {
     }
 
     setTimeout(done, timeout);
-    possible.canceled(done);
+    future.canceled(done);
 }
 
-function delay2(timeout, possible, cb) {
-    if (typeof possible === 'function' && !possible.canceled) {
-        cb = possible;
-        possible = null;
+function delay2(timeout, future, cb) {
+    if (typeof future === 'function' && !future.canceled) {
+        cb = future;
+        future = null;
     }
-    possible = possible || cancelify.possible();
+    future = future || cancelify.future();
     setTimeout(function () {
-        if (possible.canceled()) return cb(new Error('Operation Canceled'));
+        if (future.canceled()) return cb(new Error('Operation Canceled'));
         cb();
     }, timeout / 4);
 }
 
-function delay3(timeout, possible, cb) {
-    if (typeof possible === 'function' && !possible.canceled) {
-        cb = possible;
-        possible = null;
+function delay3(timeout, future, cb) {
+    if (typeof future === 'function' && !future.canceled) {
+        cb = future;
+        future = null;
     }
-    possible = possible || cancelify.possible();
+    future = future || cancelify.future();
 
     async.series([
         function (callback) {
@@ -147,7 +147,7 @@ function delay3(timeout, possible, cb) {
 
     function safeThrowIfCanceled(callback) {
         try {
-            possible.throwIfCanceled();
+            future.throwIfCanceled();
             delay(timeout / 4, callback);
         } catch (e) {
             callback(e);
@@ -155,16 +155,16 @@ function delay3(timeout, possible, cb) {
     }
 }
 
-function cascade(possible, cb) {
+function cascade(future, cb) {
     async.series([
         function (callback) {
-            delay(500, possible, callback);
+            delay(500, future, callback);
         },
         function (callback) {
-            delay(500, possible, callback);
+            delay(500, future, callback);
         },
         function (callback) {
-            delay(500, possible, callback);
+            delay(500, future, callback);
         }
     ], cb);
 }

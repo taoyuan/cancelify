@@ -31,13 +31,13 @@ setTimeout(function () {
 }, 1000);
 ```
 
-#### cancelify.possible()
+#### cancelify.future()
 
-Returns an 'empty' cancelify possible (one that will never be canceled).
+Returns an 'empty' future (one that will never be canceled).
 
 ```js
-function asyncOperation(arg1, arg2, arg3, possible) {
-    possible = possible || cancelify.possible();
+function asyncOperation(arg1, arg2, arg3, future) {
+    future = future || cancelify.future();
 
     // Continue with function knowing there is a cancelable
 }
@@ -56,7 +56,7 @@ var cancelable = cancelify(function (err, data) {
     console.log(data);
 });
 
-asyncOperation(arg1, arg2, arg3, cancelable.possible());
+asyncOperation(arg1, arg2, arg3, cancelable.future());
 
 cancelable.cancel('canceled');
 ```
@@ -80,10 +80,10 @@ If canceled with a callback, calls callback when the cancelable is canceled
 (this is probably currently the most useful of these methods).
 
 ```javascript
-function get(url, possible) {
-    var req = request(url, possible);
+function get(url, future) {
+    var req = request(url, future);
 
-    possible.canceled(function (reason) {
+    future.canceled(function (reason) {
         req.abort();
     });
 }
@@ -105,9 +105,10 @@ function asyncOperation(cancelable) {
 }
 ```
 
-#### cancelable.possible()
+#### cancelable.future()
 
-Returns possible functions delegates cancelable:
+Returns future functions delegates cancelable:
+* `cancel`
 * `canceled`
 * `throwIfCanceled`
 

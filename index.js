@@ -6,8 +6,8 @@ var create = exports = module.exports = function () {
     return new Cancelable();
 };
 
-exports.possible = function () {
-    return create().possible();
+exports.future = function () {
+    return create().future();
 };
 
 exports.Cancelable = Cancelable;
