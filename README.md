@@ -23,93 +23,93 @@ Returns a new cancelify:
 ```js
 var cancelify = require('cancelify');
 
-var cancellable = cancelify();
-callAsyncOperation(arg1, arg2, arg3, cancellable.future());
+var cancelable = cancelify();
+callAsyncOperation(arg1, arg2, arg3, cancelable.future());
 
 setTimeout(function () {
-    cancellable.cancel('Operation timed out');
+    cancelable.cancel('Operation timed out');
 }, 1000);
 ```
 
 #### cancelify.possible()
 
-Returns an 'empty' cancelify possible (one that will never be cancelled).
+Returns an 'empty' cancelify possible (one that will never be canceled).
 
 ```js
 function asyncOperation(arg1, arg2, arg3, possible) {
     possible = possible || cancelify.possible();
 
-    // Continue with function knowing there is a cancellable
+    // Continue with function knowing there is a cancelable
 }
 ```
 
-### cancellable
+### cancelable
 
-#### cancellable.cancel()
+#### cancelable.cancel()
 
 Cancels the current async operations.
 
 ```js
 var cancelify = require('cancelify');
-var cancellable = cancelify(function (err, data) {
+var cancelable = cancelify(function (err, data) {
     if (err) throw err;
     console.log(data);
 });
 
-asyncOperation(arg1, arg2, arg3, cancellable.possible());
+asyncOperation(arg1, arg2, arg3, cancelable.possible());
 
-cancellable.cancel('canceled');
+cancelable.cancel('canceled');
 ```
 
-#### cancellable.cancelled([callback])
+#### cancelable.canceled([callback])
 
-If no arguments provide, returns true if the cancellable has been cancelled:
+If no arguments provide, returns true if the cancelable has been canceled:
 
 ```js
 //In ES6
-function asyncOperation(cancellable) {
+function asyncOperation(cancelable) {
   return spawn(function* () {
-    while(!cancellable.cancelled()) {
+    while(!cancelable.canceled()) {
       yield NextAsyncOp();
     }
   })
 }
 ```
 
-If cancelled with a callback, calls callback when the cancellable is cancelled 
+If canceled with a callback, calls callback when the cancelable is canceled 
 (this is probably currently the most useful of these methods).
 
 ```javascript
 function get(url, possible) {
     var req = request(url, possible);
 
-    possible.cancelled(function (reason) {
+    possible.canceled(function (reason) {
         req.abort();
     });
 }
 ```
 
-#### cancellable.throwIfCancelled()
+#### cancelable.throwIfCanceled()
 
-Throws the reason if the cancellable has been cancelled:
+Throws the reason if the cancelable has been canceled:
 
 ```javascript
 //In ES6
-function asyncOperation(cancellable) {
+function asyncOperation(cancelable) {
     return spawn(function* () {
         while(true) {
-            cancellable.throwIfCancelled()
+            cancelable.throwIfCanceled()
             yield NextAsyncOp();
         }
     })
 }
 ```
 
-#### cancellable.possible()
+#### cancelable.possible()
 
 Returns possible functions delegates cancelable:
 * `canceled`
-* `throwIfCancelled`
+* `throwIfCanceled`
 
 ## License
 
