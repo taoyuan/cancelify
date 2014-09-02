@@ -24,7 +24,7 @@ Returns a new cancelify:
 var cancelify = require('cancelify');
 
 var cancellable = cancelify();
-callAsyncOperation(arg1, arg2, arg3, cancellable.future);
+callAsyncOperation(arg1, arg2, arg3, cancellable.future());
 
 setTimeout(function () {
     cancellable.cancel('Operation timed out');
