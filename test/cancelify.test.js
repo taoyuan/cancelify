@@ -97,7 +97,7 @@ function delay(timeout, future, cb) {
         cb = future;
         future = null;
     }
-    future = future || cancelify.empty();
+    future = future || cancelify.future();
 
     var called = false;
 
@@ -116,7 +116,7 @@ function delay2(timeout, future, cb) {
         cb = future;
         future = null;
     }
-    future = future || cancelify.empty();
+    future = future || cancelify.future();
     setTimeout(function () {
         if (future.cancelled()) return cb(new Error('Operation Cancelled'));
         cb();
@@ -128,7 +128,7 @@ function delay3(timeout, future, cb) {
         cb = future;
         future = null;
     }
-    future = future || cancelify.empty();
+    future = future || cancelify.future();
 
     async.series([
         function (callback) {

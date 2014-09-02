@@ -31,13 +31,13 @@ setTimeout(function () {
 }, 1000);
 ```
 
-#### cancelify.empty()
+#### cancelify.future([fn])
 
 Returns an 'empty' cancelify future (one that will never be cancelled).
 
 ```js
 function asyncOperation(arg1, arg2, arg3, callback) {
-    callback = callback || cancelify.empty();
+    callback = callback || cancelify.future();
 
     // Continue with function knowing there is a cancelify future
 }
