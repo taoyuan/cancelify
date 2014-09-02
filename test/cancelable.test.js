@@ -2,33 +2,33 @@
 
 var async = require('async');
 var t = require('chai').assert;
-var cancelify = require('../lib/cancelify');
+var cancelify = require('../');
 
 describe.only('cancelify', function () {
 
     describe('Default token fn', function () {
-        it('should not get cancelled', function (done) {
+        it('should not get canceled', function (done) {
             delay(10, done);
         });
     });
 
-    describe('Cancelling with a future', function () {
+    describe('Canceling with a possible', function () {
         it('should invoke callback with reason in the next turn of the event loop', function (done) {
-            var fn = cancelify();
+            var cancelable = cancelify();
             var waitedTillNextTurn = false;
             var timeout;
-            fn.cancel('Test Cancel');
+            cancelable.cancel('Test Cancel');
             waitedTillNextTurn = true;
             timeout = setTimeout(function () {
                 throw new Error('Did not cancel fast enough');
             }, 100);
 
-            delay(20000, fn.future, function (reason) {
-                if (!reason) throw new Error('Should have been cancelled');
+            delay(20000, cancelable.possible(), function (reason) {
+                if (!reason) throw new Error('Should have been canceled');
                 t(waitedTillNextTurn);
                 t.instanceOf(reason, Error);
                 t.equal(reason.message, 'Test Cancel');
-                t.equal(reason.code, 'OperationCancelled');
+                t.equal(reason.code, 'OperationCanceled');
                 clearTimeout(timeout);
                 done();
             });
@@ -36,31 +36,31 @@ describe.only('cancelify', function () {
     });
 
     describe('Polling for cancelify', function () {
-        describe('using `.cancelled()`', function () {
+        describe('using `.canceled()`', function () {
             it('should works', function (done) {
-                var fn = cancelify();
+                var cancelable = cancelify();
                 var timeout;
-                fn.cancel('Test Cancel');
+                cancelable.cancel('Test Cancel');
                 timeout = setTimeout(function () {
                     throw new Error('Did not cancel fast enough');
                 }, 30);
-                delay2(40, fn.future, function (reason) {
-                    if (!reason) throw new Error('Should have been cancelled');
+                delay2(40, cancelable.possible(), function (reason) {
+                    if (!reason) throw new Error('Should have been canceled');
                     clearTimeout(timeout);
                     done();
                 });
             });
         });
-        describe('using `.throwIfCancelled()`', function () {
+        describe('using `.throwIfCanceled()`', function () {
             it('should works', function (done) {
-                var fn = cancelify();
+                var cancelable = cancelify();
                 var timeout;
-                fn.cancel('Test Cancel');
+                cancelable.cancel('Test Cancel');
                 timeout = setTimeout(function () {
                     throw new Error('Did not cancel fast enough');
                 }, 30);
-                delay3(40, fn.future, function (reason) {
-                    if (!reason) throw new Error('Should have been cancelled');
+                delay3(40, cancelable.possible(), function (reason) {
+                    if (!reason) throw new Error('Should have been canceled');
                     clearTimeout(timeout);
                     done();
                 });
@@ -70,20 +70,20 @@ describe.only('cancelify', function () {
 
     describe('Cascading cancelify', function () {
         it('should works', function (done) {
-            var fn = cancelify();
+            var cancelable = cancelify();
             var waitedTillNextTurn = false;
             var timeout;
-            fn.cancel('Test Cancel');
+            cancelable.cancel('Test Cancel');
             waitedTillNextTurn = true;
             timeout = setTimeout(function () {
                 throw new Error('Did not cancel fast enough');
             }, 20);
-            cascade(fn.future, function (reason) {
-                if (!reason) throw new Error('Should have been cancelled');
+            cascade(cancelable.possible(), function (reason) {
+                if (!reason) throw new Error('Should have been canceled');
                 t(waitedTillNextTurn);
                 t.instanceOf(reason, Error);
                 t.equal(reason.message, 'Test Cancel');
-                t.equal(reason.code, 'OperationCancelled');
+                t.equal(reason.code, 'OperationCanceled');
                 clearTimeout(timeout);
                 done();
             });
@@ -92,12 +92,12 @@ describe.only('cancelify', function () {
 });
 
 
-function delay(timeout, future, cb) {
-    if (typeof future === 'function' && !future.cancelled) {
-        cb = future;
-        future = null;
+function delay(timeout, possible, cb) {
+    if (typeof possible === 'function') {
+        cb = possible;
+        possible = null;
     }
-    future = future || cancelify.future();
+    possible = possible || cancelify.possible();
 
     var called = false;
 
@@ -108,46 +108,46 @@ function delay(timeout, future, cb) {
     }
 
     setTimeout(done, timeout);
-    future.cancelled(done);
+    possible.canceled(done);
 }
 
-function delay2(timeout, future, cb) {
-    if (typeof future === 'function' && !future.cancelled) {
-        cb = future;
-        future = null;
+function delay2(timeout, possible, cb) {
+    if (typeof possible === 'function' && !possible.canceled) {
+        cb = possible;
+        possible = null;
     }
-    future = future || cancelify.future();
+    possible = possible || cancelify.possible();
     setTimeout(function () {
-        if (future.cancelled()) return cb(new Error('Operation Cancelled'));
+        if (possible.canceled()) return cb(new Error('Operation Canceled'));
         cb();
     }, timeout / 4);
 }
 
-function delay3(timeout, future, cb) {
-    if (typeof future === 'function' && !future.cancelled) {
-        cb = future;
-        future = null;
+function delay3(timeout, possible, cb) {
+    if (typeof possible === 'function' && !possible.canceled) {
+        cb = possible;
+        possible = null;
     }
-    future = future || cancelify.future();
+    possible = possible || cancelify.possible();
 
     async.series([
         function (callback) {
             delay(timeout / 4, callback);
         },
         function (callback) {
-            safeThrowIfCancelled(callback);
+            safeThrowIfCanceled(callback);
         },
         function (callback) {
-            safeThrowIfCancelled(callback);
+            safeThrowIfCanceled(callback);
         },
         function (callback) {
-            safeThrowIfCancelled(callback);
+            safeThrowIfCanceled(callback);
         }
     ], cb);
 
-    function safeThrowIfCancelled(callback) {
+    function safeThrowIfCanceled(callback) {
         try {
-            future.throwIfCancelled();
+            possible.throwIfCanceled();
             delay(timeout / 4, callback);
         } catch (e) {
             callback(e);
@@ -155,16 +155,16 @@ function delay3(timeout, future, cb) {
     }
 }
 
-function cascade(future, cb) {
+function cascade(possible, cb) {
     async.series([
         function (callback) {
-            delay(500, future, callback);
+            delay(500, possible, callback);
         },
         function (callback) {
-            delay(500, future, callback);
+            delay(500, possible, callback);
         },
         function (callback) {
-            delay(500, future, callback);
+            delay(500, possible, callback);
         }
     ], cb);
 }
