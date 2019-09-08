@@ -2,7 +2,7 @@ cancelify
 =========
 
 [![NPM Version](https://img.shields.io/npm/v/cancelify.svg?style=flat)](https://www.npmjs.org/package/cancelify)
-[![Build Status](http://img.shields.io/travis/taoyuan/cancelify.svg?style=flat)](https://travis-ci.org/taoyuan/cancelify)
+[![Build Status](http://img.shields.io/travis/taoyuan/cancelify.svg?style=flat)](https://travis-ci.org/taoyuan/cancelify) [![Greenkeeper badge](https://badges.greenkeeper.io/taoyuan/cancelify.svg)](https://greenkeeper.io/)
 
 > A javascript library for making async operations cancelify
 
