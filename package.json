@@ -24,15 +24,15 @@
     "cancelify"
   ],
   "devDependencies": {
-    "async": "^0.9.0",
+    "async": "^3.1.0",
     "chai": "*",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-mocha-test": "^0.11.0",
-    "jshint-stylish": "^0.4.0",
-    "load-grunt-tasks": "^0.6.0",
-    "mocha": "^1.21.4",
-    "time-grunt": "~1.0.0"
+    "grunt-contrib-jshint": "^2.1.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-mocha-test": "^0.13.3",
+    "jshint-stylish": "^2.2.1",
+    "load-grunt-tasks": "^5.1.0",
+    "mocha": "^6.2.0",
+    "time-grunt": "~2.0.0"
   },
   "scripts": {
     "test": "grunt"
